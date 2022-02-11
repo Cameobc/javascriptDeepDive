@@ -75,16 +75,32 @@ function parameter(x, y){
 }
 parameter(2,5,6);
 
-//즉시 실행 함수
+//즉시 실행 함수 (immediatelyInvokedFunctionExpression)
 // - 함수 정의와 동시에 즉시 호출되며 단 한 번만 호출된다.
 // - 반드시 그룹연산자() 로 감싸야 한다.
-(function (){
+var res = (function (){
     var a = 3;
     var b = 5;
     return a*b;
 }());
+
+console.log(res);
+res = (function (a, b){
+    return a*b;
+}(5,5));
+console.log(res);
 (function immediatelyInvokedFunctionExpression(){
     var a = 5;
     var b = 7;
     return a *b;
 }());
+
+// 재귀 호출 함수(Recursive call)
+function countDown(n){
+    if(n >= 0){
+        console.log(n);
+        countDown(n-1);
+    }
+}
+
+countDown(10);
