@@ -104,3 +104,132 @@ function countDown(n){
 }
 
 countDown(10);
+
+
+function factorial(n){
+    //탈추 조건
+    if(n <=1){
+        return 1;
+    }
+    //재귀호출
+    return  n*factorial(n-1);
+}
+
+console.log(factorial(5));
+
+
+// 중첩 함수(Nested Function) || 내부 함수(Inner Function)
+// 중첩 함수를 포함하는 함수를 외부 함수(Outer Function) 라고 부르며, 
+// 중첩 함수는 자기 자신을 포함하는 외부 함수를 돕는 헬퍼함수(Helper Function) 역할을 한다.
+// 호이스팅으로 인해 혼란이 발생할 수 있으므로 if문이나 for 문 등의 코드 블록에서 함수 선언문을 통해 함수를 정의하는 것은 바람직하지 않다.
+// 스코프& 클로저에 깊은 관련이 있다.
+function outer(){
+    var x = 1;
+    //Nested Function
+    function inner(){
+        var y =2;
+        //외부 함수의 변수 참조 가능
+        console.log(x+y);
+    }
+    inner();
+}
+
+outer();
+
+
+// 콜백함수
+// -함수의 매개변수를 통해 다른 함수의 내부로 전달되는 함수이며,
+// - 매개변수를 통해 함수의 외부에서 콜백 함수를 전달받은 함수를 고차 함수(Higher-Order Function)이라함
+// - 고차 함수는 콜백 함수를 자신의 일부분으로 합성함
+// - 콜백 함수는 고차 함수에 의해 호출되며, 이때 고차 함수는 필요에 따라 콜백 함수에 인수를 전달할 수 있음
+function repeat(n){
+    for(let i =0;i<n; i++){
+        console.log(i);
+    }
+}
+repeat(5);
+
+function repeat2(n){
+    for(let i =0; i<n; i++){
+        if(i%2){
+            console.log(i);
+        }
+    }
+}
+repeat2(5);
+
+//위의 함수를 개선하기 위해 변치 않는 공통 로직을 미리 정의하고, 변경되는 로직은 추상화해서 함수 외부에서 내부로 전달
+function repeat3(n, f){
+    for(let i =0; i<n;i++){
+        f(i);
+    }
+}
+
+let logAll = function(i){
+    console.log(i);
+};
+
+repeat3(5, logAll);
+
+console.log('구분선=========');
+let logOdds = function(i){
+    if(i%2){
+        console.log(i);
+    }
+};
+repeat3(5, logOdds);
+
+
+console.log('구분선=========');
+//콜백 함수가 고차 함수 내부에만 호출된다면 콜백 함수를 익명 함수 리터럴로 정의하며 곧바로 전달하는 것이 일반적
+repeat3(5, function(i){
+    if(i%2){
+        console.log(i);
+    }
+});
+
+//콜백 함수를 사용하는 고차 함수 map
+var callRes = [1, 2, 3].map(function (item){
+    return item * 2;
+});
+
+console.log(callRes);
+
+//콜백 함수를 사용하는 고차 함수 filter
+callRes = [1, 2, 3].filter(function (item){
+    return item % 2;
+});
+console.log(callRes);
+
+//콜백 함수를 사용하는 고차 함수 reduce
+callRes = [1, 2, 3].reduce(function (acc, cur){
+    console.log(`acc is ${acc}, cur is ${cur}`)
+    return acc + cur;
+}, 0);
+console.log(callRes);
+// -> 최종 합산값을 리턴해줌 그래서 6임. 3+3
+
+// 순수 함수와 비순수 함수
+// - 순수 함수 : 부수 효과가 없는 함수
+// - 비순수 함수 : 외부 상태에 의존하거나 외부 상태를 변경하는 부수효과가 있는 함수
+
+//pure function
+let count = 0;
+function increase(n){
+    return ++n;
+}
+count = increase(count);
+console.log(count);
+
+count = increase(count);
+console.log(count);
+
+//impure function
+let impureCount = 0;
+function increase2(){
+    return ++impureCount;
+}
+increase2();
+console.log(impureCount);
+increase2();
+console.log(impureCount);
